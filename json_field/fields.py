@@ -20,9 +20,9 @@ try:
 except AttributeError:
     JSON_DECODE_ERROR = ValueError # other
 
-TIME_RE = re.compile(r'^\d{2}:\d{2}:\d{2}')
-DATE_RE = re.compile(r'^\d{4}-\d{2}-\d{2}(?!T)')
-DATETIME_RE = re.compile(r'^\d{4}-\d{2}-\d{2}T')
+TIME_RE = re.compile(r'^\d{2}:\d{2}:\d{2}$')
+DATE_RE = re.compile(r'^\d{4}-\d{2}-\d{2}(?!T)$')
+DATETIME_RE = re.compile(r'^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$')
 
 class JSONDecoder(json.JSONDecoder):
     """ Recursive JSON to Python deserialization. """
