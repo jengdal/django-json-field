@@ -39,10 +39,12 @@ class JSONFieldTest(TestCase):
         self.assertEqual('""', t4.get_json_null_json())
 
     def test_decimal(self):
-        t1 = Test.objects.create(json=Decimal(1.24))
-        self.assertEqual(Decimal(1.24), Test.objects.get(pk=t1.pk).json)
-        t2 = Test.objects.create(json={'test':[{'test':Decimal(1.24)}]})
-        self.assertEqual({'test':[{'test':Decimal(1.24)}]}, Test.objects.get(pk=t2.pk).json)
+        t1 = Test.objects.create(json=1.24)
+        self.assertEqual(Decimal('1.24'), Test.objects.get(pk=t1.pk).json)
+        t2 = Test.objects.create(json=Decimal(1.24))
+        self.assertEqual(Decimal(1.24), Test.objects.get(pk=t2.pk).json)
+        t3 = Test.objects.create(json={'test':[{'test':Decimal(1.24)}]})
+        self.assertEqual({'test':[{'test':Decimal(1.24)}]}, Test.objects.get(pk=t3.pk).json)
 
     def test_time(self):
         now = datetime.datetime.now().time()
@@ -68,6 +70,12 @@ class JSONFieldTest(TestCase):
         self.assertEqual(now_rounded, Test.objects.get(pk=t1.pk).json)
         t2 = Test.objects.create(json={'test':[{'test':now}]})
         self.assertEqual({'test':[{'test':now_rounded}]}, Test.objects.get(pk=t2.pk).json)
+
+    def test_numerical_strings(self):
+        t1 = Test.objects.create(json='"555"')
+        self.assertEqual('555', Test.objects.get(pk=t1.pk).json)
+        t2 = Test.objects.create(json='"123.98712634789162349781264"')
+        self.assertEqual('123.98712634789162349781264', Test.objects.get(pk=t2.pk).json)
 
     def test_get_set_json(self):
         t1 = Test.objects.create(json={'test':123})
